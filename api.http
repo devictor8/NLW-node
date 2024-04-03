@@ -2,8 +2,26 @@ POST http://localhost:3333/events
 Content-Type: application/json
 
 {
-    "title": "nlw Summit",
-    "details": "Um evento para quem é apaixonado por programação",
-    "maximumAttendees": 100
+    "title": "evento 2",
+    "details": null,
+    "maximumAttendees": 2
     
 }
+
+###
+
+POST http://localhost:3333/events/5ea249d2-9d28-4c21-8c0f-c017b50c3fd9/attendees
+Content-Type: application/json
+
+{
+    "name": "Victor Salgado",
+    "email": "joaosalgado6@gmail.com"
+}
+
+###
+
+GET http://localhost:3333/events/5ea249d2-9d28-4c21-8c0f-c017b50c3fd9
+
+###
+
+GET http://localhost:3333/attendees/4/badge
