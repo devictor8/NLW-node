@@ -27,7 +27,8 @@ export async function getEventAttendees(app:FastifyInstance) {
                 createdAt: z.date(),
                 checkedInAt: z.date().nullable()
               })
-            )
+            ),
+            total: z.number()
           })
         }
       }
@@ -35,32 +36,44 @@ export async function getEventAttendees(app:FastifyInstance) {
       const { eventId } = request.params
       const { pageIndex, query } = request.query
 
-      const attendees = await prisma.attendee.findMany({
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          createdAt: true,
-          checkIn: {
-            select: {
-              createdeAt: true
+      const [attendees,total] = await Promise.all([
+        prisma.attendee.findMany({
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            createdAt: true,
+            checkIn: {
+              select: {
+                createdAt: true
+              }
             }
+          },
+          where: query ? {
+            eventId,
+            name: {
+              contains: query,
+            }
+          } : {
+            eventId
+          },
+          take: 10,
+          skip: 10 * pageIndex,
+          orderBy: {
+            createdAt: 'desc',
           }
-        },
-        where: query ? {
-          eventId,
-          name: {
-            contains: query,
+        }),
+        prisma.attendee.count({
+          where: query ? {
+            eventId,
+            name: {
+              contains: query
+            }
+          } : {
+            eventId
           }
-        } : {
-          eventId
-        },
-        take: 10,
-        skip: 10 * pageIndex,
-        orderBy: {
-          createdAt: 'desc',
-        }
-      })
+        })
+      ])
 
       return reply.status(200).send({ 
         attendees: attendees.map(attendee => {
@@ -69,9 +82,9 @@ export async function getEventAttendees(app:FastifyInstance) {
             name: attendee.name,
             email: attendee.email,
             createdAt: attendee.createdAt,
-            checkedInAt: attendee.checkIn?.createdeAt ?? null,
+            checkedInAt: attendee.checkIn?.createdAt ?? null,
           }
-        })
+        }), total
       })
     })
 }

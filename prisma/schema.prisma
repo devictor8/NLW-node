@@ -34,7 +34,7 @@ model Attendee {
 
 model CheckIn {
   id         Int      @id @default(autoincrement())
-  createdeAt DateTime @default(now()) @map("created_at")
+  createdAt DateTime @default(now()) @map("created_at")
   attendeeId Int      @unique @map("attendee_id")
   attendee   Attendee @relation(fields: [attendeeId], references: [id], onDelete: Cascade)
 
