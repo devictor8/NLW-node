@@ -35,3 +35,44 @@ O sistema fará um scan da credencial do participante para permitir a entrada no
 ### Requisitos não-funcionais
 
 - [x] O check-in no evento será realizado através de um QRCode;
+
+### Executando a API
+Clone este repositório
+
+```bash
+$ git clone https://github.com/devictor8/NLW-unite-node.git
+```
+
+Acesse a pasta do projeto no terminal
+
+```bash
+$ cd NLW-unite-node
+```
+
+Instale as dependências
+
+```bash
+$ npm install
+```
+
+Seed no banco de dados
+
+```bash
+$ npx prisma db seed
+```
+
+Execute em modo de desenvolvimento
+
+```bash
+$ npm run dev
+```
+Acesse /docs para ter acesso ao swagger da API
+![image](https://github.com/devictor8/NLW-unite-node/assets/136649508/8080845b-e514-403e-9cb0-2e7c6c8ca5ce)
+
+Tecnologias Utilizadas
+ - TypeScript
+ - NodeJS
+ - Fastify
+ - Zod
+ - Prisma ORM
+ - Lib DayJS
